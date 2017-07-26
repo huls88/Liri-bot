@@ -8,14 +8,23 @@ var fs = require('fs');
 var command = process.argv[2];
 var commandArgument = process.argv[3];
 
-
-
+// var commandArgument = process.argv[3];
 ///twitter
+
+var spotify = new Spotify({
+  id: 'cf2e3bdd2f6a4a5792c6409196befee7',
+  secret: '049eaca090384988a0169b470e2c9fa7'
+});
 
 switch(command){
   case 'my-tweets':
   myTweets();
   break;
+
+  case 'spotify-this-song':
+		mySpotify(commandArgument);
+		break;
+
 }
 
 function myTweets() {
@@ -26,40 +35,35 @@ var client = new Twitter({
   access_token_key: '889721993683238912-PALrUB3r09Q6Pgxp0oWe5hIzgnPqTWV',
   access_token_secret: 'pMlbEqZRGKbhcCwEzj9I6miLTbmjOBt2PCEjLEdwjMPAz'
 });
-// var params = {
-//   q: 'huls88',
-//   count: 4
-// };
 client.get('statuses/user_timeline', function(error, tweets, response){
-
-
-
   for (var i = 0; i < tweets.length; i++){
     console.log(tweets[i].text);
   }
-
 // end the get function
 });
 
 // end the myTweets function
 
-////************POST********
-// var tweet = {
-//   status: '#testers from node.js'
-// };
-// client.post('statuses/update', tweet, tweeted);
-//
-// function tweeted(error, data, response){
-//   if (error){
-//     console.log("Something went wrong");
-//   }
-//   else {
-//     console.log("it worked");
-//   }
-// }
-//**************POST**********
+
 
 }
+
+
+
+function mySpotify(receivedSong) {
+  var theSong = receivedSong ? receivedSong : 'back in black';
+
+  spotify.search({ type: 'track', query: theSong}, function(err, data) {
+    if (err) {
+      return console.log("Error occured: " + err);
+    }
+
+    console.log(theSong.artist);
+
+  });
+
+}
+
 
 ////request
 // request('http://www.google.com', function (error, response, body) {
